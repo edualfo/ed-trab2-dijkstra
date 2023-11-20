@@ -1,8 +1,8 @@
-seg - main functions, first headers
+seg - top-down, main, headers;
 ter - problem, dijkstra;
 qua - vector, heap;
 qui - conectar os modulos;
-sex - hmm;
+sex - last hard-work day;
 sab - off;
 dom - verificacoes, testes gerais, entrega.
 
