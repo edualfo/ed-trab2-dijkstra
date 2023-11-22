@@ -1,16 +1,39 @@
 
-TARGET = dijkstra-heap
+# variaveis
+CC = gcc
+CFLAGS = -Wall -g
+
+SRCDIR = source
+OBJDIR = obj
+INCDIR = headers
+
+SRCS = $(wildcard $(SRCDIR)/*.c)
+OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS)) $(OBJDIR)/main.o
+HEADERS = $(wildcard $(INCDIR)/*.h)
+
+TARGET = main
+
+RM = rm -f
 
 all: $(TARGET)
 
-$(TARGET):
-	gcc -o $(TARGET) *.c
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
-run: $(TARGET)
-	./$(TARGET)
+# compilacao (.c -> .o)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-valgrind: $(TARGET)
-	valgrind ./$(TARGET)
+$(OBJDIR)/main.o: main.c $(HEADERS) | $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
+# linkagem (.o -> executavel)
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+
+# outras regras
 clean:
-	rm $(TARGET)
+	$(RM) $(OBJS) $(TARGET) $(TARGET).exe
+
+run: 
+	./$(TARGET)
