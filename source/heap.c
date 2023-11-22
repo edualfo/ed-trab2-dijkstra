@@ -21,35 +21,13 @@ struct Heap
 };
 
 
-HeapNode *_heap_node_construct(void *data, double priority)
-{
-  HeapNode *n = (HeapNode *)calloc(1, sizeof(HeapNode));
-
-  n->data = data;
-  n->priority = priority;
-
-  return n;
-}
-
-
-void _heap_node_destroy(HeapNode *n)
-{
-  if(n->data != NULL)
-  {
-    free(n->data);
-  }
-
-  free(n);
-}
-
-
 Heap *heap_construct()
 {
   Heap *h = (Heap *)calloc(1, sizeof(Heap));
 
   h->capacity = 2;
 
-  h->nodes = (HeapNode *)calloc(h->capacity, sizeof(HeapNode));
+  h->nodes = (HeapNode *)malloc(h->capacity * sizeof(HeapNode));
 
   return h;
 }
@@ -59,7 +37,7 @@ void _heap_realloc(Heap *h)
 {
   h->capacity *= 2;
 
-  h->nodes = (HeapNode *)calloc(capacity, sizeof(HeapNode));
+  h->nodes = (HeapNode *)realloc(h->nodes, h->capacity * sizeof(HeapNode));
 }
 
 
@@ -70,7 +48,7 @@ void heap_push(Heap *h, void *data, double priority)
     _heap_realloc(h);
   }
 
-  h->nodes[h->size] = _heap_node_construct(data, priority);
+  h->nodes[h->size].data = data;
 
   _heapify_up(h);
 }
@@ -83,13 +61,10 @@ void *heap_pop(Heap *h)
     return NULL;
   }
 
-  void *data = h->nodes[0]->data;
-
-  _heap_node_destroy(h->nodes[0]);
-  h->size--;
+  void *data = h->nodes[0].data;
 
   h->nodes[0] = h->nodes[h->size-1];
-  h->nodes[h->size-1] = NULL;
+  h->size--;
 
   _heapify_down(h);
 
@@ -113,14 +88,14 @@ void heap_destroy(Heap *h)
 }
 
 
-int _heap_node_cmp(HeapNode *n1, HeapNode *n2)
+int _heap_node_cmp(HeapNode n1, HeapNode n2)
 {
-  if((int)n1->data > (int)n2->data)
+  if((int)n1.data > (int)n2.data)
   {
     return 1;
   }
 
-  if((int)n1->data < (int)n2->data)
+  if((int)n1.data < (int)n2.data)
   {
     return -1;
   }
@@ -141,9 +116,9 @@ void _heapify_up(Heap *h)
       break;
     }
 
-    if( /* (h->nodes[i]->priority) * */ _heap_node_cmp(h->nodes[i], h->nodes[(i-1)/2]) )
+    if( ( (h->nodes[i].priority) * _heap_node_cmp(h->nodes[i], h->nodes[(i-1)/2]) ) > 0)
     {
-      Node *n = h->nodes[i];
+      HeapNode n = h->nodes[i];
       h->nodes[i] = h->nodes[(i-1)/2];
       h->nodes[(i-1)/2] = n;;
     }
@@ -161,9 +136,13 @@ void _heapify_down(Heap *h)
 
   while(1)
   {
-    if(1)
+    if( (2*i)+1 >= h->size && (2*i)+2 >= h->size )
     {
-      break
+      break;
     }
+
+    // tem que comparar o pai com os 2 filhos *crying emoji*
+
+
   }
 }
