@@ -3,15 +3,15 @@
 CC = gcc
 CFLAGS = -Wall -g
 
+TARGET = main
+
 SRCDIR = source
 OBJDIR = obj
 INCDIR = headers
 
 SRCS = $(wildcard $(SRCDIR)/*.c)
-OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS)) $(OBJDIR)/main.o
+OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS)) $(OBJDIR)/$(TARGET).o
 HEADERS = $(wildcard $(INCDIR)/*.h)
-
-TARGET = main
 
 RM = rm -f
 
@@ -24,7 +24,7 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(OBJDIR)/main.o: main.c $(HEADERS) | $(OBJDIR)
+$(OBJDIR)/$(TARGET).o: $(TARGET).c $(HEADERS) | $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 # linkagem (.o -> executavel)
