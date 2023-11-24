@@ -3,7 +3,7 @@
 #include "headers/heap.h"
 #include "headers/vector.h"
 #include "headers/problem.h"
-#include "headers/djikstra.h"
+#include "headers/dijkstra.h"
 #include "path.h"
 
 
