@@ -4,7 +4,7 @@
 #include "headers/vector.h"
 #include "headers/problem.h"
 #include "headers/dijkstra.h"
-#include "path.h"
+#include "headers/path.h"
 
 
 void print_and_destroy_paths(Vector *paths)
